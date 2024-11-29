@@ -2,31 +2,28 @@ package com.schoolmanagement.controller;
 
 import com.schoolmanagement.entity.School;
 import com.schoolmanagement.service.SchoolService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/schools")
 public class SchoolController {
-    public final SchoolService schoolService;
 
-    public SchoolController(SchoolService schoolService) {
-        this.schoolService = schoolService;
+    private final SchoolService schoolService;
+
+
+    @GetMapping("/getAll")
+    private List<School> getAll(){
+        return schoolService.getAllSchools();
     }
-    //fetch schools
-
-    @GetMapping
-    public ResponseEntity<List<School>> getAllSchools() {
-        List<School> schools = schoolService.getAllSchools();
-        return ResponseEntity.ok(schools);
-    }
-
 
     // Create a new school
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<School> createSchool(@RequestBody School school) {
         School savedSchool = schoolService.saveSchool(school);
         return new ResponseEntity<>(savedSchool, HttpStatus.CREATED);

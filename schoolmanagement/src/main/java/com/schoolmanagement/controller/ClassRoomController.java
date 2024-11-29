@@ -1,32 +1,30 @@
 package com.schoolmanagement.controller;
 
 import com.schoolmanagement.entity.ClassRoom;
+import com.schoolmanagement.entity.Subject;
 import com.schoolmanagement.service.ClassRoomService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/classrooms")
 public class ClassRoomController {
 
     private final ClassRoomService classroomService;
 
-    public ClassRoomController(ClassRoomService classroomService) {
-        this.classroomService = classroomService;
-    }
 
-    // Fetch all classrooms in a specific school
-    @GetMapping("/school/{schoolId}")
-    public ResponseEntity<List<ClassRoom>> getAllClassroomsBySchool(@PathVariable Long schoolId) {
-        List<ClassRoom> classrooms = classroomService.getAllClassRooms();
-        return ResponseEntity.ok(classrooms);
+    @GetMapping("/getAll")
+    public List<ClassRoom> getAll() {
+        return classroomService.getAllClassRooms();
     }
 
     // Create a new classroom
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<ClassRoom> createClassroom(@RequestBody ClassRoom classroom) {
         ClassRoom savedClassroom = classroomService.saveClassRoom(classroom);
         return new ResponseEntity<>(savedClassroom, HttpStatus.CREATED);

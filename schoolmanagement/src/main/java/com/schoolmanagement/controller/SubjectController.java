@@ -2,31 +2,28 @@ package com.schoolmanagement.controller;
 
 import com.schoolmanagement.entity.Subject;
 import com.schoolmanagement.service.SubjectService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/subjects")
 public class SubjectController {
 
     private final SubjectService subjectService;
 
-    public SubjectController(SubjectService subjectService) {
-        this.subjectService = subjectService;
-    }
 
-    // Fetch all subjects taught in a specific school
-    @GetMapping("/school/{schoolId}")
-    public ResponseEntity<List<Subject>> getAllSubjectsBySchool(@PathVariable Long schoolId) {
-        List<Subject> subjects = subjectService.getAllSubjects();
-        return ResponseEntity.ok(subjects);
+    @GetMapping("/getAll")
+    public List<Subject> getAll() {
+        return subjectService.getAllSubjects();
     }
 
     // Add a new subject
-    @PostMapping
+    @PostMapping("/createSubject")
     public ResponseEntity<Subject> createSubject(@RequestBody Subject subject) {
         Subject savedSubject = subjectService.saveSubject(subject);
         return new ResponseEntity<>(savedSubject, HttpStatus.CREATED);
